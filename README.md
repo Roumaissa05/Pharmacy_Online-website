@@ -15,4 +15,4 @@ A full-stack pharmacy e-commerce website built using:
 ## ⚙️ Setup
 Run using XAMPP and import database from vitapharm.sql
 ## 👩‍💻 Collaborators
-- @ikram
+- @ikram-Alim3
