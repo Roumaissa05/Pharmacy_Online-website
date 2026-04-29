@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>VitaPharm | الصيدلية الذكية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f6e4a;
+            --primary-dark: #0a5137;
+            --primary-light: #e8f5e9;
+            --secondary: #2c7da0;
+            --accent: #f4a261;
+            --danger: #e76f51;
+            --success: #2a9d8f;
+            --dark: #2d3e50;
+            --gray: #6c757d;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --border: #e9ecef;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius: 20px;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #f0f2f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        body.english {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .navbar {
+            background: var(--white);
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-vitapharm .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0a5c3e;
+        }
+
+        .logo-vitapharm .brand-sub {
+            font-size: 0.8rem;
+            color: #4a6a5e;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            color: var(--gray);
+        }
+
+        .nav-btn.active,
+        .nav-btn:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .role-switch-container {
+            position: relative;
+        }
+
+        .role-switch-btn {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border: 1px solid var(--border);
+            padding: 10px 24px 10px 40px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .role-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            display: none;
+            z-index: 100;
+        }
+
+        .role-dropdown.show {
+            display: block;
+        }
+
+        .role-option {
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .role-option:hover {
+            background: var(--primary-light);
+        }
+
+        .lang-switch {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 60px;
+            cursor: pointer;
+        }
+
+        .lang-switch:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .main-content {
+            padding: 2rem 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .brand-showcase {
+            background: linear-gradient(135deg, #fef9e6, #fff5e0);
+            border-radius: 50px;
+            padding: 2.5rem 3rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .brand-center {
+            text-align: center;
+        }
+
+        .brand-center .logo-icon {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.8rem;
+        }
+
+        .brand-center .logo-icon i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .brand-center .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .brand-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        .brand-icons .icon-circle {
+            background: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .brand-icons .icon-circle i {
+            font-size: 1.6rem;
+            color: var(--primary);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #0a5c3e, #1e7a55);
+            border-radius: 50px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1.1rem;
+        }
+
+        .search-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            background: white;
+            padding: 12px 24px;
+            border-radius: 70px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 14px 12px;
+            font-size: 1.1rem;
+            outline: none;
+            background: transparent;
+        }
+
+        .search-bar button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 60px;
+            padding: 0 32px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .suggestions-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            max-height: 280px;
+            overflow-y: auto;
+            display: none;
+            z-index: 100;
+        }
+
+        .suggestion-item {
+            padding: 14px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .suggestion-item:hover {
+            background: var(--primary-light);
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-icon-card {
+            background: white;
+            border-radius: 28px;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .category-icon-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+        }
+
+        .category-icon-card .category-img {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-icon-card .category-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .category-icon-card .category-img i {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        .category-icon-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-icon-card p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .slider-wrapper {
+            margin-bottom: 2rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .slider-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .slider-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .slider-arrow-left {
+            left: -20px;
+        }
+
+        .slider-arrow-right {
+            right: -20px;
+        }
+
+        .slider-arrow:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .products-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.2rem;
+            padding: 0.5rem 0.2rem 1rem;
+            scroll-behavior: smooth;
+        }
+
+        .product-card {
+            min-width: 260px;
+            max-width: 260px;
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-img {
+            background: #f8f9fa;
+            height: 110px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        .product-img i {
+            font-size: 2.2rem;
+            color: var(--primary);
+        }
+
+        .product-card h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            color: var(--dark);
+        }
+
+        .product-stock {
+            font-size: 0.7rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-prescription {
+            background: #fff3cd;
+            color: #b87c00;
+        }
+
+        .badge-otc {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .product-price {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .btn-cart {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            width: 100%;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(15, 110, 74, 0.3);
+        }
+
+        .category-hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 40px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            color: white;
+        }
+
+        .category-hero .cat-hero-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .category-hero .cat-hero-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .category-hero .cat-hero-img i {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        .category-hero h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .orders-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .orders-header h2 {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .purchased-meds {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .med-badge {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .payment-btn {
+            background: var(--light);
+            border: 2px solid var(--border);
+            padding: 12px 24px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .payment-btn:hover,
+        .payment-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .payment-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+        }
+
+        .payment-card {
+            background: white;
+            border-radius: 40px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 450px;
+        }
+
+        .payment-card input,
+        .payment-card select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 1rem;
+        }
+
+        .prescription-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10002;
+        }
+
+        .prescription-card {
+            background: white;
+            border-radius: 40px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 450px;
+        }
+
+        .back-btn {
+            background: var(--light);
+            border: 1px solid var(--border);
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .cart-table th,
+        .cart-table td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-table th {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-stat {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+
+        .admin-stat:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .admin-stat i {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .admin-stat .value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-add-large {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 60px;
+            width: 100%;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            cursor: pointer;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 1.8rem;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 420px;
+        }
+
+        .modal-content input,
+        .modal-content select {
+            width: 100%;
+            margin: 8px 0;
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            font-size: 1rem;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .modal-content .tab-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.8rem;
+        }
+
+        .modal-content .tab {
+            cursor: pointer;
+            font-weight: 700;
+            padding: 6px 0;
+            color: var(--gray);
+            border-bottom: 2px solid transparent;
+        }
+
+        .modal-content .tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+            z-index: 2000;
+            border-right: 4px solid var(--primary);
+        }
+
+        .data-table {
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+            font-size: 1.2rem;
+        }
+
+        .error-msg {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 1rem;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            color: #856404;
+        }
+
+        @media (max-width: 900px) {
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .brand-showcase {
+                flex-direction: column;
+            }
+
+            .admin-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="logo-vitapharm">
+            <div class="brand-name">VitaPharm</div>
+            <div class="brand-sub">ONLINE PHARMACY | Caring for your health from home</div>
+        </div>
+        <div class="nav-links" id="navLinks"></div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <button class="lang-switch" id="langToggle"><i class="fas fa-globe"></i> <span
+                    id="langText">العربية</span></button>
+            <div class="role-switch-container">
+                <div class="role-switch-btn" id="roleDisplay" style="cursor:default;">
+                    <i class="fas fa-user" id="roleIcon"></i>
+                    <span id="roleText">زائر</span>
+                </div>
+            </div>
+            <button id="authBtn" class="nav-btn"><i class="fas fa-sign-in-alt"></i> <span
+                    id="authBtnText">دخول</span></button>
+        </div>
+    </div>
+    <div class="main-content" id="mainContent"></div>
+    <footer style="text-align: center; padding: 1.5rem; color: var(--gray); border-top: 1px solid var(--border);">
+        <div>VitaPharm | ONLINE PHARMACY | Caring for your health from home</div>
+        <small>© 2025 VitaPharm. All rights reserved.</small>
+    </footer>
+
+    <script>
+        // ===================== CONFIG =====================
+        // ⚠️ عدّلي هذا الرابط حسب مكان ملفاتك في htdocs
+        const API_BASE = "";
+
+        // ===================== DATA =====================
+        const IMAGE_PATH = "images/";
+        let products = [
+            { id: 1, nameAr: "أتورفاستاتين", nameEn: "Atorvastatin", imageFile: "atorvastatin.jpg", category: "أمراض القلب", priceDZD: 950, priceUSD: 6.80, stock: 20, imageIcon: "fas fa-heartbeat", prescription: true },
+            { id: 2, nameAr: "ليسينوبريل", nameEn: "Lisinopril", imageFile: "lisinopril.jpg", category: "أمراض القلب", priceDZD: 780, priceUSD: 5.60, stock: 38, imageIcon: "fas fa-heartbeat", prescription: true },
+            { id: 3, nameAr: "أملوديبين", nameEn: "Amlodipine", imageFile: "amlodipine.jpg", category: "أمراض القلب", priceDZD: 650, priceUSD: 4.70, stock: 52, imageIcon: "fas fa-heartbeat", prescription: true },
+            { id: 4, nameAr: "كارفيديلول", nameEn: "Carvedilol", imageFile: "carvedilol.jpg", category: "أمراض القلب", priceDZD: 890, priceUSD: 6.40, stock: 28, imageIcon: "fas fa-heartbeat", prescription: true },
+            { id: 5, nameAr: "فالساتران", nameEn: "Valsartan", imageFile: "valsartan.jpg", category: "أمراض القلب", priceDZD: 720, priceUSD: 5.20, stock: 45, imageIcon: "fas fa-heartbeat", prescription: true },
+            { id: 6, nameAr: "كلوبيدوجريل", nameEn: "Clopidogrel", imageFile: "clopidogrel.jpg", category: "أمراض القلب", priceDZD: 850, priceUSD: 6.10, stock: 32, imageIcon: "fas fa-heartbeat", prescription: true },
+            { id: 7, nameAr: "بيزوبرولول", nameEn: "Bisoprolol", imageFile: "bisoprolol.jpg", category: "أمراض القلب", priceDZD: 680, priceUSD: 4.90, stock: 55, imageIcon: "fas fa-heartbeat", prescription: true },
+            { id: 8, nameAr: "كانديسارتان", nameEn: "Candesartan", imageFile: "candesartan.jpg", category: "أمراض القلب", priceDZD: 740, priceUSD: 5.30, stock: 42, imageIcon: "fas fa-heartbeat", prescription: true },
+            { id: 9, nameAr: "فوروسيمايد", nameEn: "Furosemide", imageFile: "furosemide.jpg", category: "أمراض القلب", priceDZD: 450, priceUSD: 3.20, stock: 78, imageIcon: "fas fa-heartbeat", prescription: true },
+            { id: 10, nameAr: "راميبريل", nameEn: "Ramipril", imageFile: "ramipril.jpg", category: "أمراض القلب", priceDZD: 820, priceUSD: 5.90, stock: 35, imageIcon: "fas fa-heartbeat", prescription: true },
+            { id: 11, nameAr: "فنتولين", nameEn: "Ventolin", imageFile: "ventolin.jpg", category: "أمراض الصدر", priceDZD: 3500, priceUSD: 25.00, stock: 20, imageIcon: "fas fa-lungs", prescription: true },
+            { id: 12, nameAr: "سيريتايد", nameEn: "Seretide", imageFile: "seretide.jpg", category: "أمراض الصدر", priceDZD: 4200, priceUSD: 30.00, stock: 15, imageIcon: "fas fa-lungs", prescription: true },
+            { id: 13, nameAr: "سبيريفا", nameEn: "Spiriva", imageFile: "spiriva.jpg", category: "أمراض الصدر", priceDZD: 3800, priceUSD: 27.00, stock: 12, imageIcon: "fas fa-lungs", prescription: true },
+            { id: 14, nameAr: "فليكسوتايد", nameEn: "Flixotide", imageFile: "flixotide.jpg", category: "أمراض الصدر", priceDZD: 3100, priceUSD: 22.00, stock: 18, imageIcon: "fas fa-lungs", prescription: true },
+            { id: 15, nameAr: "بلميكورت", nameEn: "Pulmicort", imageFile: "pulmicort.jpg", category: "أمراض الصدر", priceDZD: 2900, priceUSD: 20.50, stock: 22, imageIcon: "fas fa-lungs", prescription: true },
+            { id: 16, nameAr: "أتروفنت", nameEn: "Atrovent", imageFile: "atrovent.jpg", category: "أمراض الصدر", priceDZD: 2700, priceUSD: 19.00, stock: 25, imageIcon: "fas fa-lungs", prescription: true },
+            { id: 17, nameAr: "سيمبيكورت", nameEn: "Symbicort", imageFile: "symbicort.jpg", category: "أمراض الصدر", priceDZD: 4500, priceUSD: 32.00, stock: 10, imageIcon: "fas fa-lungs", prescription: true },
+            { id: 18, nameAr: "يونيفيل", nameEn: "Uniphyllin", imageFile: "uniphyllin.jpg", category: "أمراض الصدر", priceDZD: 1800, priceUSD: 13.00, stock: 30, imageIcon: "fas fa-lungs", prescription: true },
+            { id: 19, nameAr: "ثيوفيلين", nameEn: "Theophylline", imageFile: "theophylline.jpg", category: "أمراض الصدر", priceDZD: 1200, priceUSD: 8.50, stock: 40, imageIcon: "fas fa-lungs", prescription: true },
+            { id: 20, nameAr: "مونتيلوكاست", nameEn: "Montelukast", imageFile: "montelukast.jpg", category: "أمراض الصدر", priceDZD: 950, priceUSD: 6.80, stock: 48, imageIcon: "fas fa-lungs", prescription: true },
+            { id: 21, nameAr: "سيتريزين", nameEn: "Cetirizine", imageFile: "cetirizine.jpg", category: "مضادات حساسية", priceDZD: 430, priceUSD: 3.10, stock: 60, imageIcon: "fas fa-allergies", prescription: false },
+            { id: 22, nameAr: "لوراتادين", nameEn: "Loratadine", imageFile: "loratadine.jpg", category: "مضادات حساسية", priceDZD: 390, priceUSD: 2.80, stock: 55, imageIcon: "fas fa-allergies", prescription: false },
+            { id: 23, nameAr: "فيكسوفينادين", nameEn: "Fexofenadine", imageFile: "fexofenadine.jpg", category: "مضادات حساسية", priceDZD: 720, priceUSD: 5.20, stock: 40, imageIcon: "fas fa-allergies", prescription: false },
+            { id: 24, nameAr: "ليفوسيتريزين", nameEn: "Levocetirizine", imageFile: "levocetirizine.jpg", category: "مضادات حساسية", priceDZD: 480, priceUSD: 3.40, stock: 45, imageIcon: "fas fa-allergies", prescription: false },
+            { id: 25, nameAr: "ديسلوراتادين", nameEn: "Desloratadine", imageFile: "desloratadine.jpg", category: "مضادات حساسية", priceDZD: 560, priceUSD: 4.00, stock: 38, imageIcon: "fas fa-allergies", prescription: false },
+            { id: 26, nameAr: "أفاميس", nameEn: "Avamys", imageFile: "avamys.jpg", category: "مضادات حساسية", priceDZD: 1850, priceUSD: 13.20, stock: 25, imageIcon: "fas fa-allergies", prescription: true },
+            { id: 27, nameAr: "ناسونيكس", nameEn: "Nasonex", imageFile: "nasonex.jpg", category: "مضادات حساسية", priceDZD: 1900, priceUSD: 13.50, stock: 22, imageIcon: "fas fa-allergies", prescription: true },
+            { id: 28, nameAr: "بيكلوميثازون", nameEn: "Beclomethasone", imageFile: "beclomethasone.jpg", category: "مضادات حساسية", priceDZD: 1200, priceUSD: 8.50, stock: 30, imageIcon: "fas fa-allergies", prescription: true },
+            { id: 29, nameAr: "أولوباتادين", nameEn: "Olopatadine", imageFile: "olopatadine.jpg", category: "مضادات حساسية", priceDZD: 650, priceUSD: 4.60, stock: 35, imageIcon: "fas fa-allergies", prescription: true },
+            { id: 30, nameAr: "إيباستين", nameEn: "Ebastine", imageFile: "ebastine.jpg", category: "مضادات حساسية", priceDZD: 580, priceUSD: 4.10, stock: 42, imageIcon: "fas fa-allergies", prescription: false },
+            { id: 31, nameAr: "باراسيتامول", nameEn: "Paracetamol", imageFile: "paracetamol.jpg", category: "أدوية الألم", priceDZD: 350, priceUSD: 2.50, stock: 120, imageIcon: "fas fa-tablets", prescription: false },
+            { id: 32, nameAr: "إيبوبروفين", nameEn: "Ibuprofen", imageFile: "ibuprofen.jpg", category: "أدوية الألم", priceDZD: 520, priceUSD: 3.70, stock: 85, imageIcon: "fas fa-capsules", prescription: false },
+            { id: 33, nameAr: "ديكلوفيناك", nameEn: "Diclofenac", imageFile: "diclofenac.jpg", category: "أدوية الألم", priceDZD: 680, priceUSD: 4.90, stock: 45, imageIcon: "fas fa-tablets", prescription: true },
+            { id: 34, nameAr: "نابروكسين", nameEn: "Naproxen", imageFile: "naproxen.jpg", category: "أدوية الألم", priceDZD: 750, priceUSD: 5.40, stock: 32, imageIcon: "fas fa-capsules", prescription: true },
+            { id: 35, nameAr: "كيتوبروفين", nameEn: "Ketoprofen", imageFile: "ketoprofen.jpg", category: "أدوية الألم", priceDZD: 620, priceUSD: 4.40, stock: 38, imageIcon: "fas fa-capsules", prescription: true },
+            { id: 36, nameAr: "ميلوكسيكام", nameEn: "Meloxicam", imageFile: "meloxicam.jpg", category: "أدوية الألم", priceDZD: 580, priceUSD: 4.10, stock: 42, imageIcon: "fas fa-tablets", prescription: true },
+            { id: 37, nameAr: "سيلكوكسيب", nameEn: "Celecoxib", imageFile: "celecoxib.jpg", category: "أدوية الألم", priceDZD: 1200, priceUSD: 8.50, stock: 25, imageIcon: "fas fa-capsules", prescription: true },
+            { id: 38, nameAr: "إيتوريكوكسيب", nameEn: "Etoricoxib", imageFile: "etoricoxib.jpg", category: "أدوية الألم", priceDZD: 1350, priceUSD: 9.60, stock: 22, imageIcon: "fas fa-tablets", prescription: true },
+            { id: 39, nameAr: "ترامادول", nameEn: "Tramadol", imageFile: "tramadol.jpg", category: "أدوية الألم", priceDZD: 450, priceUSD: 3.20, stock: 50, imageIcon: "fas fa-capsules", prescription: true },
+            { id: 40, nameAr: "كودايين", nameEn: "Codeine", imageFile: "codeine.jpg", category: "أدوية الألم", priceDZD: 380, priceUSD: 2.70, stock: 48, imageIcon: "fas fa-tablets", prescription: true },
+            { id: 41, nameAr: "ميتفورمين", nameEn: "Metformin", imageFile: "metformin.jpg", category: "أدوية السكري", priceDZD: 380, priceUSD: 2.70, stock: 95, imageIcon: "fas fa-tint", prescription: true },
+            { id: 42, nameAr: "جلوكوفاج", nameEn: "Glucophage", imageFile: "glucophage.jpg", category: "أدوية السكري", priceDZD: 450, priceUSD: 3.20, stock: 70, imageIcon: "fas fa-tint", prescription: true },
+            { id: 43, nameAr: "جليميبيريد", nameEn: "Glimepiride", imageFile: "glimepiride.jpg", category: "أدوية السكري", priceDZD: 620, priceUSD: 4.40, stock: 48, imageIcon: "fas fa-tint", prescription: true },
+            { id: 44, nameAr: "جليكلازيد", nameEn: "Gliclazide", imageFile: "gliclazide.jpg", category: "أدوية السكري", priceDZD: 580, priceUSD: 4.10, stock: 52, imageIcon: "fas fa-tint", prescription: true },
+            { id: 45, nameAr: "لانتوس", nameEn: "Lantus", imageFile: "lantus.jpg", category: "أدوية السكري", priceDZD: 2800, priceUSD: 20.00, stock: 25, imageIcon: "fas fa-syringe", prescription: true },
+            { id: 46, nameAr: "نوفورابيد", nameEn: "NovoRapid", imageFile: "novorapid.jpg", category: "أدوية السكري", priceDZD: 2600, priceUSD: 18.50, stock: 28, imageIcon: "fas fa-syringe", prescription: true },
+            { id: 47, nameAr: "سيتاجليبتين", nameEn: "Sitagliptin", imageFile: "sitagliptin.jpg", category: "أدوية السكري", priceDZD: 1850, priceUSD: 13.20, stock: 35, imageIcon: "fas fa-tablets", prescription: true },
+            { id: 48, nameAr: "ليراجلوتيد", nameEn: "Liraglutide", imageFile: "liraglutide.jpg", category: "أدوية السكري", priceDZD: 3200, priceUSD: 22.80, stock: 18, imageIcon: "fas fa-syringe", prescription: true },
+            { id: 49, nameAr: "إمباجليفلوزين", nameEn: "Empagliflozin", imageFile: "empagliflozin.jpg", category: "أدوية السكري", priceDZD: 1950, priceUSD: 13.90, stock: 30, imageIcon: "fas fa-tablets", prescription: true },
+            { id: 50, nameAr: "داباجليفلوزين", nameEn: "Dapagliflozin", imageFile: "dapagliflozin.jpg", category: "أدوية السكري", priceDZD: 2100, priceUSD: 15.00, stock: 25, imageIcon: "fas fa-tablets", prescription: true },
+            { id: 51, nameAr: "أوميبرازول", nameEn: "Omeprazole", imageFile: "omeprazole.jpg", category: "الجهاز الهضمي", priceDZD: 420, priceUSD: 3.00, stock: 110, imageIcon: "fas fa-pills", prescription: false },
+            { id: 52, nameAr: "موتيليوم", nameEn: "Motilium", imageFile: "motilium.jpg", category: "الجهاز الهضمي", priceDZD: 580, priceUSD: 4.10, stock: 55, imageIcon: "fas fa-pills", prescription: false },
+            { id: 53, nameAr: "بنتاسا", nameEn: "Pentasa", imageFile: "pentasa.jpg", category: "الجهاز الهضمي", priceDZD: 1850, priceUSD: 13.20, stock: 22, imageIcon: "fas fa-pills", prescription: true },
+            { id: 54, nameAr: "كولونيل", nameEn: "Colonil", imageFile: "colonil.jpg", category: "الجهاز الهضمي", priceDZD: 320, priceUSD: 2.30, stock: 65, imageIcon: "fas fa-pills", prescription: false },
+            { id: 55, nameAr: "لانسوبرازول", nameEn: "Lansoprazole", imageFile: "lansoprazole.jpg", category: "الجهاز الهضمي", priceDZD: 480, priceUSD: 3.40, stock: 72, imageIcon: "fas fa-pills", prescription: false },
+            { id: 56, nameAr: "إيزوميبرازول", nameEn: "Esomeprazole", imageFile: "esomeprazole.jpg", category: "الجهاز الهضمي", priceDZD: 550, priceUSD: 3.90, stock: 58, imageIcon: "fas fa-pills", prescription: false },
+            { id: 57, nameAr: "رانيتيدين", nameEn: "Ranitidine", imageFile: "ranitidine.jpg", category: "الجهاز الهضمي", priceDZD: 350, priceUSD: 2.50, stock: 85, imageIcon: "fas fa-pills", prescription: false },
+            { id: 58, nameAr: "فاموتيدين", nameEn: "Famotidine", imageFile: "famotidine.jpg", category: "الجهاز الهضمي", priceDZD: 390, priceUSD: 2.80, stock: 68, imageIcon: "fas fa-pills", prescription: false },
+            { id: 59, nameAr: "بسموث", nameEn: "Bismuth", imageFile: "bismuth.jpg", category: "الجهاز الهضمي", priceDZD: 280, priceUSD: 2.00, stock: 90, imageIcon: "fas fa-pills", prescription: false },
+            { id: 60, nameAr: "ميبيفرين", nameEn: "Mebeverine", imageFile: "mebeverine.jpg", category: "الجهاز الهضمي", priceDZD: 450, priceUSD: 3.20, stock: 48, imageIcon: "fas fa-pills", prescription: true },
+            { id: 61, nameAr: "أموكسيسيلين", nameEn: "Amoxicillin", imageFile: "amoxicillin.jpg", category: "مضادات حيوية", priceDZD: 890, priceUSD: 6.30, stock: 40, imageIcon: "fas fa-pills", prescription: true },
+            { id: 62, nameAr: "أزيثروميسين", nameEn: "Azithromycin", imageFile: "azithromycin.jpg", category: "مضادات حيوية", priceDZD: 1250, priceUSD: 8.90, stock: 28, imageIcon: "fas fa-pills", prescription: true },
+            { id: 63, nameAr: "سيبروفلوكساسين", nameEn: "Ciprofloxacin", imageFile: "ciprofloxacin.jpg", category: "مضادات حيوية", priceDZD: 780, priceUSD: 5.60, stock: 35, imageIcon: "fas fa-pills", prescription: true },
+            { id: 64, nameAr: "دوكسيسيكلين", nameEn: "Doxycycline", imageFile: "doxycycline.jpg", category: "مضادات حيوية", priceDZD: 920, priceUSD: 6.60, stock: 30, imageIcon: "fas fa-pills", prescription: true },
+            { id: 65, nameAr: "كلاريثروميسين", nameEn: "Clarithromycin", imageFile: "clarithromycin.jpg", category: "مضادات حيوية", priceDZD: 1100, priceUSD: 7.80, stock: 25, imageIcon: "fas fa-pills", prescription: true },
+            { id: 66, nameAr: "سيفالكسين", nameEn: "Cephalexin", imageFile: "cephalexin.jpg", category: "مضادات حيوية", priceDZD: 680, priceUSD: 4.90, stock: 42, imageIcon: "fas fa-pills", prescription: true },
+            { id: 67, nameAr: "ليفوفلوكساسين", nameEn: "Levofloxacin", imageFile: "levofloxacin.jpg", category: "مضادات حيوية", priceDZD: 950, priceUSD: 6.80, stock: 32, imageIcon: "fas fa-pills", prescription: true },
+            { id: 68, nameAr: "مترونيدازول", nameEn: "Metronidazole", imageFile: "metronidazole.jpg", category: "مضادات حيوية", priceDZD: 580, priceUSD: 4.10, stock: 55, imageIcon: "fas fa-pills", prescription: true },
+            { id: 69, nameAr: "فانكومايسين", nameEn: "Vancomycin", imageFile: "vancomycin.jpg", category: "مضادات حيوية", priceDZD: 2200, priceUSD: 15.70, stock: 15, imageIcon: "fas fa-pills", prescription: true },
+            { id: 70, nameAr: "سيفترياكسون", nameEn: "Ceftriaxone", imageFile: "ceftriaxone.jpg", category: "مضادات حيوية", priceDZD: 1850, priceUSD: 13.20, stock: 20, imageIcon: "fas fa-syringe", prescription: true },
+            { id: 71, nameAr: "فيتامين D3", nameEn: "Vitamin D3", imageFile: "vitamin-d3.jpg", category: "مكملات غذائية", priceDZD: 800, priceUSD: 5.70, stock: 95, imageIcon: "fas fa-sun", prescription: false },
+            { id: 72, nameAr: "فيتامين C", nameEn: "Vitamin C", imageFile: "vitamin-c.jpg", category: "مكملات غذائية", priceDZD: 450, priceUSD: 3.20, stock: 120, imageIcon: "fas fa-apple-alt", prescription: false },
+            { id: 73, nameAr: "أوميغا 3", nameEn: "Omega 3", imageFile: "omega-3.jpg", category: "مكملات غذائية", priceDZD: 1850, priceUSD: 13.20, stock: 65, imageIcon: "fas fa-fish", prescription: false },
+            { id: 74, nameAr: "زنك", nameEn: "Zinc", imageFile: "zinc.jpg", category: "مكملات غذائية", priceDZD: 380, priceUSD: 2.70, stock: 85, imageIcon: "fas fa-capsules", prescription: false },
+            { id: 75, nameAr: "فيتامين B12", nameEn: "Vitamin B12", imageFile: "vitamin-b12.jpg", category: "مكملات غذائية", priceDZD: 550, priceUSD: 3.90, stock: 72, imageIcon: "fas fa-capsules", prescription: false },
+            { id: 76, nameAr: "حديد", nameEn: "Iron", imageFile: "iron.jpg", category: "مكملات غذائية", priceDZD: 420, priceUSD: 3.00, stock: 88, imageIcon: "fas fa-capsules", prescription: false },
+            { id: 77, nameAr: "ماغنيسيوم", nameEn: "Magnesium", imageFile: "magnesium.jpg", category: "مكملات غذائية", priceDZD: 480, priceUSD: 3.40, stock: 65, imageIcon: "fas fa-capsules", prescription: false },
+            { id: 78, nameAr: "كالسيوم", nameEn: "Calcium", imageFile: "calcium.jpg", category: "مكملات غذائية", priceDZD: 520, priceUSD: 3.70, stock: 78, imageIcon: "fas fa-capsules", prescription: false },
+            { id: 79, nameAr: "بروبيوتيك", nameEn: "Probiotic", imageFile: "probiotic.jpg", category: "مكملات غذائية", priceDZD: 950, priceUSD: 6.80, stock: 45, imageIcon: "fas fa-pills", prescription: false },
+            { id: 80, nameAr: "كولاجين", nameEn: "Collagen", imageFile: "collagen.jpg", category: "مكملات غذائية", priceDZD: 1200, priceUSD: 8.50, stock: 38, imageIcon: "fas fa-capsules", prescription: false },
+            { id: 81, nameAr: "كالبروفين", nameEn: "Calprofen", imageFile: "calprofen.jpg", category: "الطفل وصحة الأطفال", priceDZD: 850, priceUSD: 6.00, stock: 45, imageIcon: "fas fa-baby", prescription: false },
+            { id: 82, nameAr: "فيفيو جونيور", nameEn: "Vivio Junior", imageFile: "vivio.jpg", category: "الطفل وصحة الأطفال", priceDZD: 650, priceUSD: 4.60, stock: 52, imageIcon: "fas fa-baby", prescription: false },
+            { id: 83, nameAr: "جالفارم", nameEn: "Galpharm Junior", imageFile: "galpharm.jpg", category: "الطفل وصحة الأطفال", priceDZD: 480, priceUSD: 3.40, stock: 60, imageIcon: "fas fa-baby", prescription: false },
+            { id: 84, nameAr: "كير OTC", nameEn: "Care OTC", imageFile: "care-otc.jpg", category: "الطفل وصحة الأطفال", priceDZD: 380, priceUSD: 2.70, stock: 70, imageIcon: "fas fa-baby", prescription: false },
+            { id: 85, nameAr: "كالبول سريع", nameEn: "Calpol Fast", imageFile: "calpol-fast.jpg", category: "الطفل وصحة الأطفال", priceDZD: 420, priceUSD: 3.00, stock: 65, imageIcon: "fas fa-baby", prescription: false },
+            { id: 86, nameAr: "جالينفول", nameEn: "Galenphol", imageFile: "galenphol.jpg", category: "الطفل وصحة الأطفال", priceDZD: 390, priceUSD: 2.80, stock: 55, imageIcon: "fas fa-baby", prescription: false },
+            { id: 87, nameAr: "بنيلين رضع", nameEn: "Benylin Infant", imageFile: "benylin-infant.jpg", category: "الطفل وصحة الأطفال", priceDZD: 580, priceUSD: 4.10, stock: 48, imageIcon: "fas fa-baby", prescription: false },
+            { id: 88, nameAr: "كالبول رضع", nameEn: "Calpol Infant", imageFile: "calpol-infant.jpg", category: "الطفل وصحة الأطفال", priceDZD: 450, priceUSD: 3.20, stock: 72, imageIcon: "fas fa-baby", prescription: false },
+            { id: 89, nameAr: "بنيلين أطفال", nameEn: "Benylin Child", imageFile: "benylin-cough.jpg", category: "الطفل وصحة الأطفال", priceDZD: 520, priceUSD: 3.70, stock: 58, imageIcon: "fas fa-baby", prescription: false },
+            { id: 90, nameAr: "كالبول 6+", nameEn: "Calpol Six Plus", imageFile: "calpol-six.jpg", category: "الطفل وصحة الأطفال", priceDZD: 480, priceUSD: 3.40, stock: 62, imageIcon: "fas fa-baby", prescription: false },
+            { id: 91, nameAr: "بنيلين ليل", nameEn: "Benylin Night", imageFile: "benylin-night.jpg", category: "الطفل وصحة الأطفال", priceDZD: 590, priceUSD: 4.20, stock: 50, imageIcon: "fas fa-baby", prescription: false }
+        ];
+
+        const mainCategories = [
+            { ar: "أمراض القلب", en: "Cardiology", key: "أمراض القلب", icon: "fas fa-heartbeat", imgFile: "Cardiology.jpg" },
+            { ar: "أمراض الصدر", en: "Respiratory", key: "أمراض الصدر", icon: "fas fa-lungs", imgFile: "Respiratory.jpg" },
+            { ar: "مضادات حساسية", en: "Antihistamines", key: "مضادات حساسية", icon: "fas fa-allergies", imgFile: "Antihistamines.jpg" },
+            { ar: "أدوية الألم", en: "Pain Relief", key: "أدوية الألم", icon: "fas fa-tablets", imgFile: "Pain Relief.jpg" },
+            { ar: "أدوية السكري", en: "Diabetes", key: "أدوية السكري", icon: "fas fa-tint", imgFile: "Diabets.jpg" },
+            { ar: "الجهاز الهضمي", en: "Gastro", key: "الجهاز الهضمي", icon: "fas fa-pills", imgFile: "Gastro.jpg" },
+            { ar: "مضادات حيوية", en: "Antibiotics", key: "مضادات حيوية", icon: "fas fa-pills", imgFile: "Antibiotic.jpg" },
+            { ar: "مكملات غذائية", en: "Supplements", key: "مكملات غذائية", icon: "fas fa-apple-alt", imgFile: "supplements.jpg" },
+            { ar: "الطفل وصحة الأطفال", en: "Baby & Child", key: "الطفل وصحة الأطفال", icon: "fas fa-baby", imgFile: "Baby & Child Health.jpg" }
+        ];
+
+        // ===================== STATE =====================
+        let allOrders = [];
+        let cart = [];           // السلة المحلية (للعرض)
+        let currentPage = "home";
+        let isArabic = true;
+        let currentUser = null;  // { id, username, role }
+        let currentChart = null;
+        let profitData = [18500, 21200, 19800, 22900, 24200, 26800];
+        let suppliers = [
+            { name: "فارما بلس", contact: "contact@pharmaplus.com", phone: "+213 551 123 456" },
+            { name: "ميديكال سورس", contact: "sales@medisource.com", phone: "+213 551 234 567" },
+            { name: "ألفا فارما", contact: "info@alphapharma.dz", phone: "+213 551 345 678" }
+        ];
+
+        // ===================== API HELPERS =====================
+        function resolveApiRequestUrl(endpoint) {
+            const base = (typeof API_BASE === "string" && API_BASE.trim() !== "")
+                ? API_BASE.trim().replace(/\/$/, "") + "/"
+                : null;
+            if (base) {
+                return new URL(endpoint, base);
+            }
+            if (window.location.protocol === "file:") {
+                return new URL(endpoint, "http://localhost/vitapharm_api/");
+            }
+            return new URL(endpoint, window.location.href);
+        }
+
+        async function api(endpoint, params = {}, method = "GET", body = null) {
+            const url = resolveApiRequestUrl(endpoint);
+            Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+            const opts = {
+                method,
+                credentials: "include",
+                headers: { "Content-Type": "application/json" }
+            };
+            if (body) opts.body = JSON.stringify(body);
+            const res = await fetch(url.toString(), opts);
+            const text = await res.text();
+            try {
+                return text ? JSON.parse(text) : {};
+            } catch (e) {
+                const preview = text.replace(/\s+/g, " ").slice(0, 160);
+                throw new Error(preview || `HTTP ${res.status}`);
+            }
+        }
+
+        // ===================== UTILS =====================
+        function showToast(msg, type = "success") {
+            let t = document.createElement('div');
+            t.className = "toast";
+            t.style.borderColor = type === "error" ? "var(--danger)" : "var(--primary)";
+            t.innerHTML = `${type === "error" ? "❌" : "✅"} ${msg}`;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 2800);
+        }
+        function formatPrice(p) { return isArabic ? `${Number(p).toFixed(0)} د.ج` : `$${Number(p).toFixed(2)}`; }
+        function getProductName(p) { return isArabic ? p.nameAr : p.nameEn; }
+        function getProductPrice(p) { return isArabic ? p.priceDZD : p.priceUSD; }
+        function getImageUrl(p) { return IMAGE_PATH + p.imageFile; }
+        function productCardHtml(p) {
+            return `<div class="product-card">
+        <div class="product-img">
+            <img src="${getImageUrl(p)}" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'${p.imageIcon}\'></i>'">
+        </div>
+        <h3>${getProductName(p)}</h3>
+        <div><span class="badge ${p.prescription ? 'badge-prescription' : 'badge-otc'}">${p.prescription ? "Rx" : "OTC"}</span></div>
+        <div class="product-price">${formatPrice(getProductPrice(p))}</div>
+        <div class="product-stock"><i class="fas fa-box"></i> ${p.stock} ${isArabic ? "وحدة" : "units"}</div>
+        <button class="btn-cart" onclick="addToCart(${p.id})"><i class="fas fa-cart-plus"></i> ${isArabic ? "أضف" : "Add"}</button>
+    </div>`;
+        }
+
+        // ===================== AUTH =====================
+        /** دور الواجهة: guest | client | staff | admin — مربوط بحساب الجلسة فقط */
+        function getSessionRole() {
+            return currentUser ? currentUser.role : "guest";
+        }
+
+        function normalizePageForRole() {
+            const role = getSessionRole();
+            if (role === "guest") {
+                if (currentPage !== "home") currentPage = "home";
+                return;
+            }
+            const allowed = {
+                client: ["home", "cart", "orders", "dashboard"],
+                staff: ["staffDashboard", "ordersManage"],
+                admin: ["adminDashboard", "suppliers", "users"]
+            };
+            const list = allowed[role] || ["home"];
+            if (!list.includes(currentPage)) {
+                currentPage = role === "staff" ? "staffDashboard" : role === "admin" ? "adminDashboard" : "home";
+            }
+        }
+
+        async function checkSession() {
+            try {
+                const data = await api("auth.php", { action: "session" });
+                if (data.ok && data.user) {
+                    currentUser = data.user;
+                    updateRoleUI();
+                    // تحميل السلة من الباك اند
+                    await loadCartFromServer();
+                }
+            } catch (e) { console.log("Session check failed", e); }
+        }
+
+        function showAuthModal() {
+            let modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+        <div class="modal-content">
+            <div class="tab-bar">
+                <div class="tab active" id="tabLogin">${isArabic ? "تسجيل الدخول" : "Login"}</div>
+                <div class="tab" id="tabSignup">${isArabic ? "إنشاء حساب" : "Sign Up"}</div>
+            </div>
+            <div id="loginPanel">
+                <input type="text" id="loginUser" placeholder="${isArabic ? "اسم المستخدم" : "Username"}">
+                <input type="password" id="loginPass" placeholder="${isArabic ? "كلمة المرور" : "Password"}">
+                <button id="doLogin" style="background:#0f6e4a;color:white;padding:10px;border-radius:40px;width:100%;border:none;font-size:1rem;font-family:'Cairo',sans-serif;cursor:pointer;margin-top:8px;">
+                    ${isArabic ? "دخول" : "Login"}
+                </button>
+                <div id="loginError" class="error-msg" style="display:none;margin-top:8px;"></div>
+            </div>
+            <div id="signupPanel" style="display:none;">
+                <input type="text" id="signupUser" placeholder="${isArabic ? "اسم المستخدم" : "Username"}">
+                <input type="password" id="signupPass" placeholder="${isArabic ? "كلمة المرور" : "Password"}">
+                <select id="signupRole">
+                    <option value="client">${isArabic ? "عميل" : "Client"}</option>
+                    <option value="staff">${isArabic ? "موظف" : "Staff"}</option>
+                </select>
+                <button id="doSignup" style="background:#0f6e4a;color:white;padding:10px;border-radius:40px;width:100%;border:none;font-size:1rem;font-family:'Cairo',sans-serif;cursor:pointer;margin-top:8px;">
+                    ${isArabic ? "إنشاء حساب" : "Sign Up"}
+                </button>
+                <div id="signupError" class="error-msg" style="display:none;margin-top:8px;"></div>
+            </div>
+            <button id="closeAuthModal" style="margin-top:10px;width:100%;background:#f0f0f0;border:none;padding:10px;border-radius:40px;cursor:pointer;font-family:'Cairo',sans-serif;">
+                ${isArabic ? "إلغاء" : "Cancel"}
+            </button>
+        </div>`;
+            document.body.appendChild(modal);
+
+            // Tabs
+            modal.querySelector('#tabLogin').onclick = () => {
+                modal.querySelector('#tabLogin').classList.add('active');
+                modal.querySelector('#tabSignup').classList.remove('active');
+                modal.querySelector('#loginPanel').style.display = 'block';
+                modal.querySelector('#signupPanel').style.display = 'none';
+            };
+            modal.querySelector('#tabSignup').onclick = () => {
+                modal.querySelector('#tabSignup').classList.add('active');
+                modal.querySelector('#tabLogin').classList.remove('active');
+                modal.querySelector('#loginPanel').style.display = 'none';
+                modal.querySelector('#signupPanel').style.display = 'block';
+            };
+
+            // Login
+            modal.querySelector('#doLogin').onclick = async () => {
+                const username = modal.querySelector('#loginUser').value.trim();
+                const password = modal.querySelector('#loginPass').value;
+                const errDiv = modal.querySelector('#loginError');
+                errDiv.style.display = 'none';
+                if (!username || !password) { errDiv.textContent = isArabic ? "أدخل الاسم وكلمة المرور" : "Enter username and password"; errDiv.style.display = 'block'; return; }
+                try {
+                    const data = await api("auth.php", { action: "login" }, "POST", { username, password });
+                    if (data.ok) {
+                        currentUser = data.user;
+                        updateRoleUI();
+                        showToast(isArabic ? "تم تسجيل الدخول بنجاح" : "Login successful");
+                        modal.remove();
+                        await loadCartFromServer();
+                        const r = data.user.role;
+                        currentPage = r === "staff" ? "staffDashboard" : r === "admin" ? "adminDashboard" : "home";
+                        render();
+                    } else {
+                        errDiv.textContent = isArabic ? "اسم المستخدم أو كلمة المرور خاطئة" : "Invalid username or password";
+                        errDiv.style.display = 'block';
+                    }
+                } catch (e) {
+                    const hint = isArabic
+                        ? " شغّل Apache (XAMPP)، وافتح الصفحة من المتصفح عبر http://localhost/.../dashboard.html وليس بالنقر المزدوج على الملف. إن كان مجلد الـ API مختلفاً، عدّل API_BASE في أعلى السكربت."
+                        : " Run Apache, open http://localhost/.../dashboard.html (not file://). Set API_BASE if your API folder differs.";
+                    errDiv.textContent = (isArabic ? "خطأ في الاتصال بالخادم" : "Server connection error") + (e.message ? `: ${e.message}` : "") + hint;
+                    errDiv.style.display = 'block';
+                }
+            };
+
+            // Signup
+            modal.querySelector('#doSignup').onclick = async () => {
+                const username = modal.querySelector('#signupUser').value.trim();
+                const password = modal.querySelector('#signupPass').value;
+                const role = modal.querySelector('#signupRole').value;
+                const errDiv = modal.querySelector('#signupError');
+                errDiv.style.display = 'none';
+                if (!username || !password) { errDiv.textContent = isArabic ? "أدخل جميع البيانات" : "Fill all fields"; errDiv.style.display = 'block'; return; }
+                try {
+                    const data = await api("auth.php", { action: "register" }, "POST", { username, password, role });
+                    if (data.ok) {
+                        showToast(isArabic ? "تم إنشاء الحساب، سجل دخولك الآن" : "Account created, please login");
+                        modal.querySelector('#tabLogin').click();
+                    } else {
+                        errDiv.textContent = data.error === "Username already exists"
+                            ? (isArabic ? "اسم المستخدم موجود مسبقاً" : "Username already exists")
+                            : (data.error || "Error");
+                        errDiv.style.display = 'block';
+                    }
+                } catch (e) {
+                    const hint = isArabic
+                        ? " شغّل Apache وافتح الموقع عبر http://localhost/.../dashboard.html."
+                        : " Run Apache and use http://localhost/.../dashboard.html.";
+                    errDiv.textContent = (isArabic ? "خطأ في الاتصال بالخادم" : "Server connection error") + (e.message ? `: ${e.message}` : "") + hint;
+                    errDiv.style.display = 'block';
+                }
+            };
+
+            modal.querySelector('#closeAuthModal').onclick = () => modal.remove();
+        }
+
+        async function logout() {
+            try {
+                await api("auth.php", { action: "logout" }, "POST");
+            } catch (e) { /* تجاهل إن انقطع الاتصال */ }
+            currentUser = null;
+            cart = [];
+            allOrders = [];
+            updateRoleUI();
+            showToast(isArabic ? "تم تسجيل الخروج" : "Logged out");
+            currentPage = "home";
+            render();
+        }
+
+        function updateRoleUI() {
+            const role = getSessionRole();
+            document.getElementById("roleText").innerText =
+                role === "guest" ? (isArabic ? "زائر" : "Guest") :
+                    role === "client" ? (isArabic ? "عميل" : "Client") :
+                        role === "staff" ? (isArabic ? "موظف / بائع" : "Staff") :
+                            (isArabic ? "مدير" : "Admin");
+            const icons = { guest: "fa-user", client: "fa-user", staff: "fa-user-md", admin: "fa-user-cog" };
+            document.getElementById("roleIcon").className = `fas ${icons[role] || "fa-user"}`;
+        }
+
+        // ===================== CART (مرتبط بالباك اند) =====================
+        async function loadCartFromServer() {
+            if (!currentUser) { cart = []; return; }
+            try {
+                const data = await api("cart.php", { action: "get" });
+                if (data.ok) cart = data.items.map(i => ({ ...i, id: parseInt(i.id) }));
+            } catch (e) { console.log("Cart load error", e); }
+        }
+
+        window.addToCart = async function (pid) {
+            let p = products.find(x => x.id === pid);
+            if (!p) return;
+            if (!currentUser) { showToast(isArabic ? "سجل دخولك أولاً لإضافة للسلة" : "Login first to add to cart", "error"); showAuthModal(); return; }
+            if (p.prescription) { showPrescriptionModal(p); return; }
+            await addToCartDirect(pid);
+        };
+
+        async function addToCartDirect(pid) {
+            let p = products.find(x => x.id === pid);
+            if (!p || !currentUser) return;
+            try {
+                const data = await api("cart.php", { action: "add" }, "POST", {
+                    id: p.id, nameAr: p.nameAr, nameEn: p.nameEn,
+                    priceDZD: p.priceDZD, priceUSD: p.priceUSD, qtyDelta: 1
+                });
+                if (data.ok) {
+                    await loadCartFromServer();
+                    showToast(isArabic ? `تمت الإضافة: ${getProductName(p)}` : `Added: ${getProductName(p)}`);
+                }
+            } catch (e) { showToast(isArabic ? "خطأ في الإضافة" : "Add error", "error"); }
+        }
+
+        // ===================== ORDERS =====================
+        async function loadOrders() {
+            if (!currentUser) { allOrders = []; return; }
+            try {
+                const data = await api("orders.php", { action: "list" });
+                if (data.ok) allOrders = data.orders;
+            } catch (e) { console.log("Orders load error", e); }
+        }
+
+        // ===================== PRESCRIPTION MODAL =====================
+        function showPrescriptionModal(product) {
+            let modal = document.createElement('div');
+            modal.className = 'prescription-modal';
+            modal.innerHTML = `
+        <div class="prescription-card">
+            <h3 style="color:var(--primary);margin-bottom:1rem;">${isArabic ? "رفع وصفة طبية" : "Upload Prescription"}</h3>
+            <div style="margin-bottom:1rem;">
+                <label>${isArabic ? "اسم الدواء" : "Medicine"}</label>
+                <input type="text" value="${getProductName(product)}" readonly style="width:100%;padding:10px;border-radius:40px;background:#f5f5f5;border:1px solid var(--border);">
+            </div>
+            <div style="margin-bottom:1rem;">
+                <label>${isArabic ? "تحميل الوصفة الطبية" : "Upload Prescription File"}</label>
+                <input type="file" id="prescFile" accept=".pdf,.jpg,.png" style="width:100%;padding:10px;">
+            </div>
+            <button id="submitPresc" style="background:var(--primary);color:white;border:none;padding:12px;border-radius:40px;width:100%;cursor:pointer;font-family:'Cairo',sans-serif;">
+                ${isArabic ? "إرسال وإضافة للسلة" : "Send & Add to Cart"}
+            </button>
+            <button id="closePresc" style="margin-top:10px;width:100%;background:#f0f0f0;border:none;padding:10px;border-radius:40px;cursor:pointer;font-family:'Cairo',sans-serif;">
+                ${isArabic ? "إلغاء" : "Cancel"}
+            </button>
+        </div>`;
+            document.body.appendChild(modal);
+            modal.querySelector('#submitPresc').onclick = async () => {
+                if (!modal.querySelector('#prescFile').files.length) {
+                    showToast(isArabic ? "الرجاء رفع الوصفة" : "Please upload prescription", "error"); return;
+                }
+                showToast(isArabic ? "تم إرسال الوصفة" : "Prescription sent");
+                modal.remove();
+                await addToCartDirect(product.id);
+            };
+            modal.querySelector('#closePresc').onclick = () => modal.remove();
+        }
+
+        // ===================== PAYMENT & CHECKOUT =====================
+        function showPaymentModal() {
+            if (cart.length === 0) { showToast(isArabic ? "السلة فارغة" : "Cart is empty", "error"); return; }
+            let modal = document.createElement('div');
+            modal.className = 'payment-modal';
+            modal.innerHTML = `
+        <div class="payment-card">
+            <h3 style="color:var(--primary);margin-bottom:1rem;">${isArabic ? "طريقة الدفع" : "Payment Method"}</h3>
+            <div class="payment-methods">
+                <button class="payment-btn" data-method="cash">${isArabic ? "الدفع عند الاستلام" : "Cash on Delivery"}</button>
+                <button class="payment-btn" data-method="gold">${isArabic ? "بطاقة ذهبية" : "Gold Card"}</button>
+                <button class="payment-btn" data-method="card">${isArabic ? "بطاقة بنكية" : "Credit Card"}</button>
+            </div>
+            <div id="paymentFormArea"></div>
+            <button id="closePayModal" style="margin-top:15px;width:100%;background:#f0f0f0;border:none;padding:10px;border-radius:40px;cursor:pointer;font-family:'Cairo',sans-serif;">${isArabic ? "إلغاء" : "Cancel"}</button>
+        </div>`;
+            document.body.appendChild(modal);
+
+            function showPayForm(method) {
+                const area = modal.querySelector('#paymentFormArea');
+                if (method === 'cash') {
+                    area.innerHTML = `<p style="text-align:center;padding:1rem;">${isArabic ? "سيتم الدفع عند الاستلام" : "Pay on delivery"}</p>
+            <button id="confirmPay" style="background:var(--primary);color:white;padding:12px;border-radius:40px;width:100%;border:none;font-family:'Cairo',sans-serif;cursor:pointer;">${isArabic ? "تأكيد الطلب" : "Confirm Order"}</button>`;
+                } else if (method === 'gold') {
+                    area.innerHTML = `
+            <input type="text" id="goldNum" placeholder="${isArabic ? "رقم البطاقة الذهبية" : "Gold Card Number"}" style="width:100%;padding:12px;margin:8px 0;border-radius:40px;border:1px solid var(--border);">
+            <input type="password" id="goldKey" placeholder="${isArabic ? "مفتاح البطاقة" : "Card Key"}" style="width:100%;padding:12px;margin:8px 0;border-radius:40px;border:1px solid var(--border);">
+            <button id="confirmPay" style="background:var(--primary);color:white;padding:12px;border-radius:40px;width:100%;border:none;font-family:'Cairo',sans-serif;cursor:pointer;">${isArabic ? "تأكيد الدفع" : "Confirm Payment"}</button>`;
+                } else {
+                    area.innerHTML = `
+            <input type="text" id="cardNum" placeholder="${isArabic ? "رقم البطاقة" : "Card Number"}" style="width:100%;padding:12px;margin:8px 0;border-radius:40px;border:1px solid var(--border);">
+            <input type="text" id="expiry" placeholder="${isArabic ? "تاريخ الانتهاء" : "Expiry Date"}" style="width:100%;padding:12px;margin:8px 0;border-radius:40px;border:1px solid var(--border);">
+            <input type="password" id="cvv" placeholder="${isArabic ? "رمز الأمان" : "CVV"}" style="width:100%;padding:12px;margin:8px 0;border-radius:40px;border:1px solid var(--border);">
+            <button id="confirmPay" style="background:var(--primary);color:white;padding:12px;border-radius:40px;width:100%;border:none;font-family:'Cairo',sans-serif;cursor:pointer;">${isArabic ? "تأكيد الدفع" : "Confirm Payment"}</button>`;
+                }
+                area.querySelector('#confirmPay').onclick = () => { modal.remove(); proceedCheckout(method); };
+            }
+
+            modal.querySelectorAll('.payment-btn').forEach(btn => {
+                btn.onclick = () => {
+                    modal.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    showPayForm(btn.dataset.method);
+                };
+            });
+            modal.querySelector('#closePayModal').onclick = () => modal.remove();
+        }
+
+        async function proceedCheckout(method) {
+            if (cart.length === 0) return;
+            const items = cart.map(i => {
+                const p = products.find(pr => pr.id === i.id);
+                return { id: i.id, nameAr: i.nameAr, nameEn: i.nameEn, priceDZD: i.priceDZD, priceUSD: i.priceUSD, qty: i.qty };
+            });
+            try {
+                const data = await api("orders.php", { action: "create" }, "POST", { payment: method, items });
+                if (data.ok) {
+                    cart = [];
+                    allOrders.unshift(data.order);
+                    showToast(isArabic ? `تم الطلب بنجاح: ${data.order.id}` : `Order placed: ${data.order.id}`);
+                    currentPage = "orders";
+                    render();
+                } else {
+                    showToast(data.error || (isArabic ? "فشل في إنشاء الطلب" : "Order failed"), "error");
+                }
+            } catch (e) {
+                showToast(isArabic ? "خطأ في الاتصال بالخادم" : "Server error", "error");
+            }
+        }
+
+        // ===================== INVOICE PDF =====================
+        async function generateInvoice(orderId) {
+            let order = allOrders.find(o => o.id === orderId);
+            if (!order) { showToast(isArabic ? "الطلب غير موجود" : "Order not found", "error"); return; }
+            showToast(isArabic ? "جاري إنشاء الفاتورة..." : "Generating invoice...");
+            let div = document.createElement('div');
+            div.style.cssText = 'position:absolute;left:-9999px;top:0;background:white;padding:30px;width:700px;font-family:Cairo,sans-serif;direction:rtl;';
+            let subtotal = isArabic ? order.totalDZD : order.totalUSD;
+            let tax = subtotal * 0.10;
+            let total = subtotal + tax;
+            div.innerHTML = `
+        <div style="text-align:center;margin-bottom:20px;border-bottom:2px solid #0f6e4a;padding-bottom:15px;">
+            <h1 style="color:#0f6e4a;font-family:serif;">VitaPharm</h1>
+            <p style="color:#4a6a5e;font-size:12px;">ONLINE PHARMACY</p>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:20px;">
+            <div><p><strong>رقم الطلب:</strong> ${order.id}</p><p><strong>التاريخ:</strong> ${order.date}</p></div>
+            <div><p><strong>العميل:</strong> ${order.customer || "Guest"}</p></div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+            <thead><tr style="background:#e8f5e9;">
+                <th style="padding:10px;border:1px solid #ddd;">المنتج</th>
+                <th style="padding:10px;border:1px solid #ddd;">الكمية</th>
+                <th style="padding:10px;border:1px solid #ddd;">السعر</th>
+                <th style="padding:10px;border:1px solid #ddd;">الإجمالي</th>
+            </tr></thead>
+            <tbody>
+                ${(order.items || []).map(i => `<tr>
+                    <td style="padding:8px;border:1px solid #ddd;">${isArabic ? i.nameAr : i.nameEn}</td>
+                    <td style="padding:8px;border:1px solid #ddd;text-align:center;">${i.qty}</td>
+                    <td style="padding:8px;border:1px solid #ddd;">${formatPrice(isArabic ? i.priceDZD : i.priceUSD)}</td>
+                    <td style="padding:8px;border:1px solid #ddd;">${formatPrice((isArabic ? i.priceDZD : i.priceUSD) * i.qty)}</td>
+                </tr>`).join('')}
+            </tbody>
+            <tfoot>
+                <tr><td colspan="3" style="padding:8px;border:1px solid #ddd;"><strong>المجموع الفرعي</strong></td><td style="padding:8px;border:1px solid #ddd;">${formatPrice(subtotal)}</td></tr>
+                <tr><td colspan="3" style="padding:8px;border:1px solid #ddd;"><strong>الضريبة (10%)</strong></td><td style="padding:8px;border:1px solid #ddd;">${formatPrice(tax)}</td></tr>
+                <tr style="background:#e8f5e9;"><td colspan="3" style="padding:10px;border:1px solid #ddd;"><strong>الإجمالي النهائي</strong></td><td style="padding:10px;border:1px solid #ddd;"><strong style="color:#0f6e4a;">${formatPrice(total)}</strong></td></tr>
+            </tfoot>
+        </table>
+        <div style="text-align:center;margin-top:20px;color:#0f6e4a;font-weight:600;">شكراً لاختياركم VitaPharm</div>`;
+            document.body.appendChild(div);
+            try {
+                await new Promise(r => setTimeout(r, 100));
+                const canvas = await html2canvas(div, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+                document.body.removeChild(div);
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                const imgData = canvas.toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', 0, 0, 210, (canvas.height * 210) / canvas.width);
+                pdf.save(`فاتورة_${order.id}.pdf`);
+                showToast(isArabic ? "تم تحميل الفاتورة" : "Invoice downloaded");
+            } catch (e) {
+                if (document.body.contains(div)) document.body.removeChild(div);
+                showToast(isArabic ? "خطأ في إنشاء الفاتورة" : "Invoice error", "error");
+            }
+        }
+
+        // ===================== RENDER PAGES =====================
+        function renderSlider(productsList, scrollId, leftId, rightId) {
+            const el = document.getElementById(scrollId);
+            if (!el) return;
+            el.innerHTML = productsList.slice(0, 8).map(productCardHtml).join('');
+            document.getElementById(leftId).onclick = () => el.scrollBy({ left: -280, behavior: 'smooth' });
+            document.getElementById(rightId).onclick = () => el.scrollBy({ left: 280, behavior: 'smooth' });
+        }
+
+        function renderHomePage() {
+            const catsHtml = mainCategories.map(c => {
+                const count = products.filter(p => p.category === c.key).length;
+                return `<div class="category-icon-card" onclick="goToCategory('${c.key}')">
+            <div class="category-img">
+                <img src="images/${c.imgFile}" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'${c.icon}\'></i>'">
+            </div>
+            <h3>${isArabic ? c.ar : c.en} <i class="${c.icon}"></i></h3>
+            <p>${count} ${isArabic ? "منتج" : "products"}</p>
+        </div>`;
+            }).join('');
+
+            document.getElementById("mainContent").innerHTML = `
+        <div class="brand-showcase">
+            <div class="brand-center">
+                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                <div class="brand-name">VitaPharm</div>
+                <div class="brand-icons">
+                    <div class="icon-circle"><i class="fas fa-home"></i></div>
+                    <div class="icon-circle"><i class="fas fa-heartbeat"></i></div>
+                    <div class="icon-circle"><i class="fas fa-shield-alt"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-section">
+            <h2>Take VitaPharm..</h2>
+            <p>save time, save money, stay healthy.</p>
+            <div>🔒 ${isArabic ? "معلوماتك الصحية محمية دائماً" : "Your health information is always protected"}</div>
+        </div>
+        <div class="search-section">
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="${isArabic ? "ابحث عن دواء..." : "Search medicine..."}" onkeyup="showSuggestions(this.value)">
+                    <button onclick="searchProducts()"><i class="fas fa-search"></i> ${isArabic ? "بحث" : "Search"}</button>
+                </div>
+                <div id="suggestionsList" class="suggestions-list"></div>
+            </div>
+        </div>
+        <div class="categories-grid">${catsHtml}</div>
+        <div class="slider-wrapper">
+            <div class="slider-header"><div class="slider-title"><i class="fas fa-star"></i> ${isArabic ? "أدوية مميزة" : "Featured Medicines"}</div></div>
+            <div class="slider-container">
+                <div class="slider-arrow slider-arrow-left" id="l1"><i class="fas fa-chevron-right"></i></div>
+                <div class="products-scroll" id="s1"></div>
+                <div class="slider-arrow slider-arrow-right" id="r1"><i class="fas fa-chevron-left"></i></div>
+            </div>
+        </div>
+        <div class="slider-wrapper">
+            <div class="slider-header"><div class="slider-title"><i class="fas fa-chart-line"></i> ${isArabic ? "الأكثر مبيعاً" : "Best Sellers"}</div></div>
+            <div class="slider-container">
+                <div class="slider-arrow slider-arrow-left" id="l2"><i class="fas fa-chevron-right"></i></div>
+                <div class="products-scroll" id="s2"></div>
+                <div class="slider-arrow slider-arrow-right" id="r2"><i class="fas fa-chevron-left"></i></div>
+            </div>
+        </div>
+        <div class="slider-wrapper">
+            <div class="slider-header"><div class="slider-title"><i class="fas fa-fire"></i> ${isArabic ? "عروض خاصة" : "Special Offers"}</div></div>
+            <div class="slider-container">
+                <div class="slider-arrow slider-arrow-left" id="l3"><i class="fas fa-chevron-right"></i></div>
+                <div class="products-scroll" id="s3"></div>
+                <div class="slider-arrow slider-arrow-right" id="r3"><i class="fas fa-chevron-left"></i></div>
+            </div>
+        </div>`;
+            renderSlider(products.slice(0, 10), "s1", "l1", "r1");
+            renderSlider(products.slice(5, 15), "s2", "l2", "r2");
+            renderSlider(products.slice(10, 20), "s3", "l3", "r3");
+        }
+
+        window.goToCategory = function (key) {
+            const cat = mainCategories.find(c => c.key === key);
+            const filtered = products.filter(p => p.category === key);
+            document.getElementById("mainContent").innerHTML = `
+        <div class="category-hero">
+            <div class="cat-hero-img">
+                <img src="images/${cat.imgFile}" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'${cat.icon}\'></i>'">
+            </div>
+            <div><h2>${isArabic ? cat.ar : cat.en}</h2><p>${filtered.length} ${isArabic ? "منتج" : "products"}</p></div>
+        </div>
+        <button class="back-btn" onclick="goBackHome()"><i class="fas fa-arrow-right"></i> ${isArabic ? "العودة" : "Back"}</button>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;">
+            ${filtered.map(productCardHtml).join('')}
+        </div>`;
+        };
+        window.goBackHome = () => { currentPage = "home"; render(); };
+
+        window.searchProducts = function () {
+            const q = document.getElementById("searchInput").value.toLowerCase();
+            const filtered = products.filter(p => (isArabic ? p.nameAr : p.nameEn).toLowerCase().includes(q));
+            document.getElementById("mainContent").innerHTML = `
+        <button class="back-btn" onclick="goBackHome()"><i class="fas fa-arrow-right"></i> ${isArabic ? "العودة" : "Back"}</button>
+        <h2 style="margin-bottom:1rem;">${isArabic ? "نتائج البحث عن" : "Results for"}: "${q}"</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;">
+            ${filtered.length ? filtered.map(productCardHtml).join('') : `<div class="stat-card">${isArabic ? "لا توجد نتائج" : "No results"}</div>`}
+        </div>`;
+            document.getElementById("suggestionsList").style.display = "none";
+        };
+
+        window.showSuggestions = function (val) {
+            const div = document.getElementById("suggestionsList");
+            if (!val.trim()) { div.style.display = "none"; return; }
+            const matches = products.filter(p => (isArabic ? p.nameAr : p.nameEn).toLowerCase().startsWith(val.toLowerCase())).slice(0, 8);
+            if (matches.length) {
+                div.innerHTML = matches.map(p => `<div class="suggestion-item" onclick="selectSuggestion('${getProductName(p)}')">${getProductName(p)}</div>`).join('');
+                div.style.display = "block";
+            } else div.style.display = "none";
+        };
+        window.selectSuggestion = function (name) { document.getElementById("searchInput").value = name; searchProducts(); };
+
+        async function renderCart() {
+            await loadCartFromServer();
+            if (cart.length === 0) {
+                document.getElementById("mainContent").innerHTML = `
+            <button class="back-btn" onclick="goBackHome()"><i class="fas fa-arrow-right"></i> ${isArabic ? "العودة" : "Back"}</button>
+            <div class="stat-card" style="text-align:center;padding:3rem;"><i class="fas fa-shopping-cart" style="font-size:3rem;color:var(--gray);"></i><p style="margin-top:1rem;">${isArabic ? "السلة فارغة" : "Cart is empty"}</p></div>`;
+                return;
+            }
+            let total = cart.reduce((s, i) => s + (isArabic ? i.priceDZD : i.priceUSD) * i.qty, 0);
+            document.getElementById("mainContent").innerHTML = `
+        <button class="back-btn" onclick="goBackHome()"><i class="fas fa-arrow-right"></i> ${isArabic ? "العودة" : "Back"}</button>
+        <h2 style="margin-bottom:1rem;"><i class="fas fa-shopping-cart"></i> ${isArabic ? "سلة التسوق" : "Shopping Cart"}</h2>
+        <table class="cart-table">
+            <thead><tr>
+                <th>${isArabic ? "المنتج" : "Product"}</th>
+                <th>${isArabic ? "الكمية" : "Qty"}</th>
+                <th>${isArabic ? "السعر" : "Price"}</th>
+                <th>${isArabic ? "الإجمالي" : "Total"}</th>
+                <th></th>
+            </tr></thead>
+            <tbody>
+                ${cart.map(item => `<tr>
+                    <td>${isArabic ? item.nameAr : item.nameEn}</td>
+                    <td>
+                        <button onclick="updateQty(${item.id},-1)" style="border:none;background:var(--primary);color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;">-</button>
+                        <span style="margin:0 8px;">${item.qty}</span>
+                        <button onclick="updateQty(${item.id},1)" style="border:none;background:var(--primary);color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;">+</button>
+                    </td>
+                    <td>${formatPrice(isArabic ? item.priceDZD : item.priceUSD)}</td>
+                    <td>${formatPrice((isArabic ? item.priceDZD : item.priceUSD) * item.qty)}</td>
+                    <td><button onclick="removeItem(${item.id})" style="background:#e76f51;color:white;border:none;padding:5px 12px;border-radius:30px;cursor:pointer;"><i class="fas fa-trash"></i></button></td>
+                </tr>`).join('')}
+            </tbody>
+        </table>
+        <div style="margin-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+            <strong style="font-size:1.2rem;">${isArabic ? "الإجمالي" : "Total"}: ${formatPrice(total)}</strong>
+            <button class="btn-cart" onclick="showPaymentModal()" style="width:auto;padding:12px 30px;">
+                <i class="fas fa-credit-card"></i> ${isArabic ? "اختر طريقة الدفع" : "Choose Payment"}
+            </button>
+        </div>`;
+        }
+
+        window.updateQty = async function (productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+            const newQty = item.qty + delta;
+            if (newQty <= 0) { await removeItem(productId); return; }
+            await api("cart.php", { action: "set_qty" }, "POST", { id: productId, qty: newQty });
+            await renderCart();
+        };
+        window.removeItem = async function (productId) {
+            await api("cart.php", { action: "remove" }, "POST", { id: productId });
+            await renderCart();
+        };
+
+        async function renderOrders() {
+            document.getElementById("mainContent").innerHTML = `<div class="loading"><i class="fas fa-spinner fa-spin"></i> ${isArabic ? "جاري التحميل..." : "Loading..."}</div>`;
+            await loadOrders();
+            let html = `<div class="orders-header"><h2><i class="fas fa-history"></i> ${isArabic ? "طلباتي" : "My Orders"}</h2></div><div class="orders-grid">`;
+            if (allOrders.length === 0) {
+                html += `<div class="stat-card">${isArabic ? "لا توجد طلبات بعد" : "No orders yet"}</div>`;
+            } else {
+                allOrders.forEach(o => {
+                    const total = isArabic ? o.totalDZD : o.totalUSD;
+                    const statusAr = o.status === 'Pending' ? 'قيد الانتظار' : o.status === 'Processing' ? 'قيد المعالجة' : 'مكتمل';
+                    html += `<div class="order-card">
+                <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+                    <strong>#${o.id}</strong><span>${o.date}</span>
+                </div>
+                <div style="margin-bottom:0.5rem;">
+                    <span class="badge ${o.status === 'Pending' ? 'badge-prescription' : 'badge-otc'}">${isArabic ? statusAr : o.status}</span>
+                </div>
+                <div style="margin:8px 0;font-size:0.9rem;">${(o.items || []).map(i => `${i.qty}x ${isArabic ? i.nameAr : i.nameEn}`).join(', ')}</div>
+                <div style="display:flex;justify-content:space-between;margin-top:0.5rem;">
+                    <strong>${formatPrice(total)}</strong>
+                    <span>${o.payment === 'cash' ? (isArabic ? 'نقدي' : 'Cash') : o.payment === 'gold' ? (isArabic ? 'ذهبية' : 'Gold') : (isArabic ? 'بطاقة' : 'Card')}</span>
+                </div>
+                <button onclick="generateInvoice('${o.id}')" style="margin-top:8px;background:var(--primary);color:white;border:none;padding:6px;border-radius:30px;width:100%;cursor:pointer;font-family:'Cairo',sans-serif;">
+                    <i class="fas fa-file-pdf"></i> ${isArabic ? "تحميل الفاتورة" : "Download Invoice"}
+                </button>
+            </div>`;
+                });
+            }
+            html += `</div>`;
+            document.getElementById("mainContent").innerHTML = html;
+        }
+
+        async function renderClientDashboard() {
+            await loadOrders();
+            const spent = allOrders.reduce((s, o) => s + Number(isArabic ? o.totalDZD : o.totalUSD), 0);
+            const purchasedProducts = allOrders.flatMap(o => o.items || []);
+            document.getElementById("mainContent").innerHTML = `
+        <h2 style="margin-bottom:1.5rem;color:var(--primary);"><i class="fas fa-chart-line"></i> ${isArabic ? "لوحة تحكم العميل" : "Client Dashboard"}</h2>
+        <div class="stat-card">
+            <div style="font-size:0.9rem;color:var(--gray);">${isArabic ? "إجمالي المشتريات" : "Total Spent"}</div>
+            <div style="font-size:2rem;font-weight:800;color:var(--primary);">${formatPrice(spent)}</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size:0.9rem;color:var(--gray);margin-bottom:0.5rem;">${isArabic ? "عدد الطلبات" : "Total Orders"}</div>
+            <div style="font-size:2rem;font-weight:800;color:var(--primary);">${allOrders.length}</div>
+        </div>
+        <div class="stat-card">
+            <h3 style="margin-bottom:1rem;">${isArabic ? "الأدوية المشتراة" : "Purchased Medicines"}</h3>
+            <div class="purchased-meds">
+                ${purchasedProducts.length
+                    ? purchasedProducts.map(p => `<div class="med-badge"><i class="fas fa-capsules"></i> ${isArabic ? p.nameAr : p.nameEn} <span style="background:white;padding:2px 8px;border-radius:20px;">${p.qty}</span></div>`).join('')
+                    : `<p style="color:var(--gray);">${isArabic ? "لا توجد مشتريات بعد" : "No purchases yet"}</p>`}
+            </div>
+        </div>`;
+        }
+
+        async function renderStaffDashboard() {
+            document.getElementById("mainContent").innerHTML = `<div class="loading"><i class="fas fa-spinner fa-spin"></i></div>`;
+            await loadOrders();
+            const pending = allOrders.filter(o => o.status === "Pending").length;
+            const processing = allOrders.filter(o => o.status === "Processing").length;
+            const completed = allOrders.filter(o => o.status === "Completed").length;
+            document.getElementById("mainContent").innerHTML = `
+        <div class="admin-stats" style="grid-template-columns:repeat(4,1fr);">
+            <div class="admin-stat"><i class="fas fa-clock"></i><div class="value">${pending}</div><div>${isArabic ? "معلقة" : "Pending"}</div></div>
+            <div class="admin-stat"><i class="fas fa-spinner"></i><div class="value">${processing}</div><div>${isArabic ? "قيد المعالجة" : "Processing"}</div></div>
+            <div class="admin-stat"><i class="fas fa-check-circle"></i><div class="value">${completed}</div><div>${isArabic ? "مكتملة" : "Completed"}</div></div>
+            <div class="admin-stat"><i class="fas fa-list"></i><div class="value">${allOrders.length}</div><div>${isArabic ? "الإجمالي" : "Total"}</div></div>
+        </div>
+        <button class="btn-cart" onclick="currentPage='ordersManage'; render()" style="width:auto;padding:12px 24px;margin-bottom:1rem;">
+            <i class="fas fa-truck-fast"></i> ${isArabic ? "إدارة الطلبات" : "Manage Orders"}
+        </button>`;
+        }
+
+        async function renderOrdersManagement() {
+            document.getElementById("mainContent").innerHTML = `<div class="loading"><i class="fas fa-spinner fa-spin"></i></div>`;
+            await loadOrders();
+            let html = `
+        <button class="back-btn" onclick="currentPage='staffDashboard'; render()"><i class="fas fa-arrow-right"></i> ${isArabic ? "العودة" : "Back"}</button>
+        <h2 style="margin-bottom:1rem;">${isArabic ? "إدارة الطلبات" : "Manage Orders"}</h2>
+        <table class="cart-table">
+            <thead><tr>
+                <th>ID</th>
+                <th>${isArabic ? "العميل" : "Customer"}</th>
+                <th>${isArabic ? "التاريخ" : "Date"}</th>
+                <th>${isArabic ? "الإجمالي" : "Total"}</th>
+                <th>${isArabic ? "الحالة" : "Status"}</th>
+                <th>${isArabic ? "إجراء" : "Action"}</th>
+            </tr></thead>
+            <tbody>
+                ${allOrders.map((o, idx) => `<tr>
+                    <td style="font-size:0.75rem;">${o.id}</td>
+                    <td>${o.customer}</td>
+                    <td>${o.date}</td>
+                    <td>${formatPrice(isArabic ? o.totalDZD : o.totalUSD)}</td>
+                    <td>
+                        <select id="stat-${idx}" style="padding:5px;border-radius:30px;border:1px solid var(--border);">
+                            <option ${o.status === "Pending" ? "selected" : ""}>Pending</option>
+                            <option ${o.status === "Processing" ? "selected" : ""}>Processing</option>
+                            <option ${o.status === "Completed" ? "selected" : ""}>Completed</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn-cart" onclick="updateOrderStatus('${o.id}', ${idx})" style="width:auto;padding:5px 14px;">
+                            ${isArabic ? "تحديث" : "Update"}
+                        </button>
+                    </td>
+                </tr>`).join('')}
+            </tbody>
+        </table>`;
+            document.getElementById("mainContent").innerHTML = html;
+
+            window.updateOrderStatus = async (orderId, idx) => {
+                const newStatus = document.getElementById(`stat-${idx}`).value;
+                try {
+                    const data = await api("orders.php", { action: "update_status" }, "POST", { id: orderId, status: newStatus });
+                    if (data.ok) showToast(isArabic ? "تم تحديث حالة الطلب" : "Status updated");
+                    else showToast(data.error || "Error", "error");
+                } catch (e) { showToast("Server error", "error"); }
+            };
+        }
+
+        async function renderAdminDashboard() {
+            document.getElementById("mainContent").innerHTML = `<div class="loading"><i class="fas fa-spinner fa-spin"></i></div>`;
+            await loadOrders();
+            const lowStock = products.filter(p => p.stock < 20);
+            document.getElementById("mainContent").innerHTML = `
+        <div class="admin-stats">
+            <div class="admin-stat" onclick="updateAdminChart('products')"><i class="fas fa-boxes"></i><div class="value">${products.length}</div><div>${isArabic ? "المنتجات" : "Products"}</div></div>
+            <div class="admin-stat" onclick="updateAdminChart('orders')"><i class="fas fa-shopping-cart"></i><div class="value">${allOrders.length}</div><div>${isArabic ? "الطلبات" : "Orders"}</div></div>
+            <div class="admin-stat" onclick="updateAdminChart('profit')"><i class="fas fa-chart-line"></i><div class="value">${profitData.reduce((a, b) => a + b, 0).toLocaleString()}</div><div>${isArabic ? "الأرباح" : "Profit"}</div></div>
+            <div class="admin-stat" onclick="updateAdminChart('alerts')"><i class="fas fa-bell"></i><div class="value">${lowStock.length}</div><div>${isArabic ? "تنبيهات" : "Alerts"}</div></div>
+            <div class="admin-stat" onclick="currentPage='suppliers'; render()"><i class="fas fa-truck"></i><div class="value">${suppliers.length}</div><div>${isArabic ? "الموردين" : "Suppliers"}</div></div>
+            <div class="admin-stat" onclick="currentPage='users'; render()"><i class="fas fa-users"></i><div class="value">-</div><div>${isArabic ? "المستخدمين" : "Users"}</div></div>
+        </div>
+        <div class="chart-container"><canvas id="adminChart" height="100"></canvas></div>
+        <button class="btn-add-large" onclick="showAddProductForm()"><i class="fas fa-plus-circle"></i> ${isArabic ? "إضافة منتج جديد" : "Add New Product"}</button>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;" id="adminProductsGrid">
+            ${products.slice(0, 20).map(p => `<div class="product-card">
+                <div class="product-img"><img src="${getImageUrl(p)}" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'${p.imageIcon}\'></i>'"></div>
+                <h3>${getProductName(p)}</h3>
+                <div><span class="badge ${p.prescription ? 'badge-prescription' : 'badge-otc'}">${p.prescription ? (isArabic ? "يستلزم وصفة" : "Rx") : "OTC"}</span></div>
+                <div><strong>${formatPrice(getProductPrice(p))}</strong> | 📦${p.stock}</div>
+                <button class="btn-cart" onclick="editProduct(${p.id})" style="background:#f4a261;">${isArabic ? "تعديل" : "Edit"}</button>
+                <button class="btn-cart" onclick="deleteProduct(${p.id})" style="background:#e76f51;margin-top:5px;">${isArabic ? "حذف" : "Delete"}</button>
+            </div>`).join('')}
+        </div>`;
+
+            window.updateAdminChart = function (type) {
+                if (currentChart) currentChart.destroy();
+                const ctx = document.getElementById("adminChart").getContext("2d");
+                let labels, data;
+                if (type === 'products') {
+                    const catCount = {};
+                    products.forEach(p => { catCount[p.category] = (catCount[p.category] || 0) + 1; });
+                    labels = Object.keys(catCount);
+                    data = Object.values(catCount);
+                } else if (type === 'orders') {
+                    labels = isArabic ? ['معلقة', 'قيد المعالجة', 'مكتملة'] : ['Pending', 'Processing', 'Completed'];
+                    data = [
+                        allOrders.filter(o => o.status === 'Pending').length,
+                        allOrders.filter(o => o.status === 'Processing').length,
+                        allOrders.filter(o => o.status === 'Completed').length
+                    ];
+                } else if (type === 'alerts') {
+                    const low = products.filter(p => p.stock < 20);
+                    labels = low.map(p => getProductName(p));
+                    data = low.map(p => p.stock);
+                } else {
+                    labels = isArabic ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'] : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+                    data = profitData;
+                }
+                currentChart = new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ label: isArabic ? 'القيمة' : 'Value', data, backgroundColor: '#0f6e4a', borderRadius: 8 }] } });
+            };
+            window.updateAdminChart('profit');
+
+            window.editProduct = (id) => {
+                let p = products.find(x => x.id === id);
+                let np = prompt(isArabic ? "السعر الجديد:" : "New price:", getProductPrice(p));
+                if (np) { if (isArabic) p.priceDZD = parseFloat(np); else p.priceUSD = parseFloat(np); showToast(isArabic ? "تم التحديث" : "Updated"); renderAdminDashboard(); }
+            };
+            window.deleteProduct = (id) => {
+                if (confirm(isArabic ? "حذف المنتج؟" : "Delete product?")) {
+                    products = products.filter(p => p.id !== id);
+                    showToast(isArabic ? "تم الحذف" : "Deleted");
+                    renderAdminDashboard();
+                }
+            };
+        }
+
+        function showAddProductForm() {
+            let modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+        <div class="modal-content" style="max-width:500px;">
+            <h3 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-plus-circle"></i> ${isArabic ? "إضافة منتج" : "Add Product"}</h3>
+            <input type="text" id="npAr" placeholder="${isArabic ? "اسم الدواء عربي" : "Arabic Name"}">
+            <input type="text" id="npEn" placeholder="${isArabic ? "اسم الدواء إنجليزي" : "English Name"}">
+            <select id="npCat">
+                ${mainCategories.map(c => `<option value="${c.key}">${isArabic ? c.ar : c.en}</option>`).join('')}
+            </select>
+            <input type="number" id="npPrice" placeholder="${isArabic ? "السعر (د.ج)" : "Price (DZD)"}">
+            <input type="number" id="npPriceUsd" placeholder="${isArabic ? "السعر ($)" : "Price (USD)"}">
+            <input type="number" id="npStock" placeholder="${isArabic ? "الكمية" : "Stock"}" value="50">
+            <select id="npRx">
+                <option value="false">${isArabic ? "بدون وصفة (OTC)" : "Over the Counter (OTC)"}</option>
+                <option value="true">${isArabic ? "يستلزم وصفة (Rx)" : "Prescription Required (Rx)"}</option>
+            </select>
+            <button id="saveNp" style="background:var(--primary);color:white;border:none;padding:12px;border-radius:40px;width:100%;cursor:pointer;font-family:'Cairo',sans-serif;margin-top:8px;">
+                <i class="fas fa-save"></i> ${isArabic ? "حفظ" : "Save"}
+            </button>
+            <button id="cancelNp" style="background:#f0f0f0;border:none;padding:10px;border-radius:40px;width:100%;cursor:pointer;font-family:'Cairo',sans-serif;margin-top:8px;">
+                ${isArabic ? "إلغاء" : "Cancel"}
+            </button>
+        </div>`;
+            document.body.appendChild(modal);
+            modal.querySelector('#saveNp').onclick = () => {
+                const nameAr = modal.querySelector('#npAr').value.trim();
+                const nameEn = modal.querySelector('#npEn').value.trim();
+                const category = modal.querySelector('#npCat').value;
+                const priceDZD = parseFloat(modal.querySelector('#npPrice').value) || 0;
+                const priceUSD = parseFloat(modal.querySelector('#npPriceUsd').value) || 0;
+                const stock = parseInt(modal.querySelector('#npStock').value) || 50;
+                const prescription = modal.querySelector('#npRx').value === 'true';
+                if (!nameAr || !nameEn) { showToast(isArabic ? "أدخل اسم الدواء" : "Enter medicine name", "error"); return; }
+                products.push({ id: Date.now(), nameAr, nameEn, imageFile: nameEn.toLowerCase().replace(/ /g, '-') + '.jpg', category, priceDZD, priceUSD, stock, imageIcon: "fas fa-capsules", prescription });
+                showToast(isArabic ? "تم إضافة المنتج" : "Product added");
+                modal.remove();
+                renderAdminDashboard();
+            };
+            modal.querySelector('#cancelNp').onclick = () => modal.remove();
+        }
+
+        function renderSuppliers() {
+            document.getElementById("mainContent").innerHTML = `
+        <button class="back-btn" onclick="currentPage='adminDashboard'; render()"><i class="fas fa-arrow-right"></i> ${isArabic ? "العودة" : "Back"}</button>
+        <h2 style="margin-bottom:1rem;"><i class="fas fa-truck"></i> ${isArabic ? "إدارة الموردين" : "Suppliers"}</h2>
+        <table class="data-table">
+            <thead><tr>
+                <th>${isArabic ? "اسم المورد" : "Name"}</th>
+                <th>${isArabic ? "البريد" : "Email"}</th>
+                <th>${isArabic ? "الهاتف" : "Phone"}</th>
+            </tr></thead>
+            <tbody id="suppTbody">
+                ${suppliers.map(s => `<tr><td>${s.name}</td><td>${s.contact}</td><td>${s.phone}</td></tr>`).join('')}
+            </tbody>
+        </table>
+        <div style="background:white;border-radius:20px;padding:1.5rem;margin-top:1.5rem;border:1px solid var(--border);">
+            <h3 style="color:var(--primary);margin-bottom:1rem;">${isArabic ? "إضافة مورد" : "Add Supplier"}</h3>
+            <input type="text" id="sName" placeholder="${isArabic ? "اسم المورد" : "Name"}" style="width:100%;padding:12px;border-radius:40px;border:1px solid var(--border);margin-bottom:8px;">
+            <input type="text" id="sEmail" placeholder="${isArabic ? "البريد الإلكتروني" : "Email"}" style="width:100%;padding:12px;border-radius:40px;border:1px solid var(--border);margin-bottom:8px;">
+            <input type="text" id="sPhone" placeholder="${isArabic ? "الهاتف" : "Phone"}" style="width:100%;padding:12px;border-radius:40px;border:1px solid var(--border);margin-bottom:8px;">
+            <button onclick="addSupplierRow()" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:12px 30px;border-radius:40px;cursor:pointer;font-family:'Cairo',sans-serif;width:100%;">
+                <i class="fas fa-plus"></i> ${isArabic ? "إضافة" : "Add"}
+            </button>
+        </div>`;
+            window.addSupplierRow = function () {
+                const name = document.getElementById('sName').value.trim();
+                const contact = document.getElementById('sEmail').value.trim();
+                const phone = document.getElementById('sPhone').value.trim();
+                if (!name || !contact || !phone) { showToast(isArabic ? "أدخل جميع البيانات" : "Fill all fields", "error"); return; }
+                suppliers.push({ name, contact, phone });
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${name}</td><td>${contact}</td><td>${phone}</td>`;
+                document.getElementById('suppTbody').appendChild(row);
+                document.getElementById('sName').value = '';
+                document.getElementById('sEmail').value = '';
+                document.getElementById('sPhone').value = '';
+                showToast(isArabic ? "تم إضافة المورد" : "Supplier added");
+            };
+        }
+
+        function renderUsers() {
+            document.getElementById("mainContent").innerHTML = `
+        <button class="back-btn" onclick="currentPage='adminDashboard'; render()"><i class="fas fa-arrow-right"></i> ${isArabic ? "العودة" : "Back"}</button>
+        <h2 style="margin-bottom:1rem;"><i class="fas fa-users"></i> ${isArabic ? "المستخدمون" : "Users"}</h2>
+        <div class="stat-card" style="text-align:center;">
+            <i class="fas fa-info-circle" style="color:var(--primary);font-size:2rem;"></i>
+            <p style="margin-top:0.5rem;">${isArabic ? "بيانات المستخدمين تُدار من قاعدة البيانات مباشرةً عبر phpMyAdmin" : "User data is managed directly from the database via phpMyAdmin"}</p>
+            <a href="http://localhost/phpmyadmin" target="_blank" style="color:var(--primary);font-weight:700;">
+                <i class="fas fa-external-link-alt"></i> phpMyAdmin
+            </a>
+        </div>`;
+        }
+
+        // ===================== MAIN RENDER =====================
+        async function render() {
+            normalizePageForRole();
+            const role = getSessionRole();
+            const nav = document.getElementById("navLinks");
+            let items = [];
+            if (role === "guest") {
+                items = [
+                    { id: "home", label: isArabic ? "الرئيسية" : "Home", icon: "fas fa-home" }
+                ];
+            } else if (role === "client") {
+                items = [
+                    { id: "home", label: isArabic ? "الرئيسية" : "Home", icon: "fas fa-home" },
+                    { id: "cart", label: isArabic ? "السلة" : "Cart", icon: "fas fa-shopping-cart" },
+                    { id: "orders", label: isArabic ? "طلباتي" : "Orders", icon: "fas fa-history" },
+                    { id: "dashboard", label: isArabic ? "حسابي" : "Dashboard", icon: "fas fa-chart-line" }
+                ];
+            } else if (role === "staff") {
+                items = [
+                    { id: "staffDashboard", label: isArabic ? "لوحة الموظف" : "Staff Panel", icon: "fas fa-user-md" },
+                    { id: "ordersManage", label: isArabic ? "إدارة الطلبات" : "Orders", icon: "fas fa-truck-fast" }
+                ];
+            } else {
+                items = [
+                    { id: "adminDashboard", label: isArabic ? "لوحة المدير" : "Admin", icon: "fas fa-chart-line" },
+                    { id: "suppliers", label: isArabic ? "الموردين" : "Suppliers", icon: "fas fa-truck" },
+                    { id: "users", label: isArabic ? "المستخدمين" : "Users", icon: "fas fa-users" }
+                ];
+            }
+            nav.innerHTML = items.map(i =>
+                `<button class="nav-btn ${currentPage === i.id ? 'active' : ''}" data-page="${i.id}">
+            <i class="${i.icon}"></i> ${i.label}
+        </button>`
+            ).join('');
+            document.querySelectorAll(".nav-btn[data-page]").forEach(btn =>
+                btn.addEventListener("click", () => { currentPage = btn.dataset.page; render(); })
+            );
+
+            document.getElementById("authBtnText").innerText = currentUser
+                ? (isArabic ? "تسجيل خروج" : "Logout")
+                : (isArabic ? "دخول" : "Login");
+            document.getElementById("authBtn").onclick = () => { if (currentUser) logout(); else showAuthModal(); };
+            updateRoleUI();
+
+            // Render the appropriate page
+            if (role === "guest") {
+                renderHomePage();
+            } else if (role === "client") {
+                if (currentPage === "home") renderHomePage();
+                else if (currentPage === "cart") await renderCart();
+                else if (currentPage === "orders") await renderOrders();
+                else if (currentPage === "dashboard") await renderClientDashboard();
+                else renderHomePage();
+            } else if (role === "staff") {
+                if (currentPage === "staffDashboard") await renderStaffDashboard();
+                else if (currentPage === "ordersManage") await renderOrdersManagement();
+                else await renderStaffDashboard();
+            } else {
+                if (currentPage === "adminDashboard") await renderAdminDashboard();
+                else if (currentPage === "suppliers") renderSuppliers();
+                else if (currentPage === "users") renderUsers();
+                else await renderAdminDashboard();
+            }
+        }
+
+        // ===================== EVENTS =====================
+        document.getElementById("langToggle").onclick = () => {
+            isArabic = !isArabic;
+            document.body.classList.toggle("english", !isArabic);
+            document.getElementById("langText").innerText = isArabic ? "العربية" : "English";
+            document.documentElement.dir = isArabic ? "rtl" : "ltr";
+            render();
+        };
+
+        // ===================== INIT =====================
+        (async () => {
+            await checkSession();
+            render();
+        })();
+    </script>
+</body>
+
+</html>
